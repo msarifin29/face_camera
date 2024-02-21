@@ -108,12 +108,12 @@ class FaceIdentifier {
       detectedFace = face;
 
       // Head is rotated to the right rotY degrees
-      if (face.headEulerAngleY! > 2 || face.headEulerAngleY! < -2) {
+      if (face.headEulerAngleY! > 5 || face.headEulerAngleY! < -5) {
         wellPositioned = false;
       }
 
       // Head is tilted sideways rotZ degrees
-      if (face.headEulerAngleZ! > 2 || face.headEulerAngleZ! < -2) {
+      if (face.headEulerAngleZ! > 3 || face.headEulerAngleZ! < -3) {
         wellPositioned = false;
       }
 
