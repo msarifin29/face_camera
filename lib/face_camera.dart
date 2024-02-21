@@ -11,6 +11,10 @@ export 'package:face_camera/src/res/enums.dart';
 export 'package:face_camera/src/models/detected_image.dart';
 export 'package:face_camera/src/paints/face_painter.dart';
 export 'package:face_camera/src/paints/hole_painter.dart';
+export 'package:face_camera/src/handlers/face_identifier.dart';
+export 'package:face_camera/src/handlers/enum_handler.dart';
+export 'package:face_camera/src/res/app_images.dart';
+export 'package:face_camera/src/res/builders.dart';
 
 class FaceCamera {
   //static const MethodChannel _channel = MethodChannel('face_camera');
