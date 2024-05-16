@@ -5,11 +5,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 import '../face_camera.dart';
-import 'handlers/enum_handler.dart';
-import 'handlers/face_identifier.dart';
-import 'paints/face_painter.dart';
-import 'paints/hole_painter.dart';
-import 'res/builders.dart';
 import 'utils/logger.dart';
 
 class SmartFaceCamera extends StatefulWidget {

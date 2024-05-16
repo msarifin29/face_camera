@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../face_camera.dart';
-import '../res/app_images.dart';
 
 class FacePainter extends CustomPainter {
   FacePainter(
