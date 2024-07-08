@@ -86,7 +86,8 @@ class FaceIdentifier {
     final options = FaceDetectorOptions(
         enableLandmarks: true,
         enableTracking: true,
-        performanceMode: FaceDetectorMode.fast);
+        // enableContours: true,
+        performanceMode: FaceDetectorMode.accurate);
     final faceDetector = FaceDetector(options: options);
     try {
       final List<Face> faces = await faceDetector.processImage(visionImage);
@@ -106,7 +107,6 @@ class FaceIdentifier {
     for (Face face in faces) {
       // rect.add(face.boundingBox);
       detectedFace = face;
-      debugPrint('cobra boundingBox ${face.contours}');
       // Head is rotated to the right rotY degrees
       if (face.headEulerAngleY! > 2 || face.headEulerAngleY! < -2) {
         wellPositioned = false;
@@ -149,7 +149,6 @@ class FaceIdentifier {
         }
       }
     }
-
     return DetectedFace(wellPositioned: wellPositioned, face: detectedFace);
   }
 }

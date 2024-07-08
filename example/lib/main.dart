@@ -92,9 +92,7 @@ class _CameraPageState extends State<CameraPage> {
                 setState(() => _capturedImage = image);
               },
               onFaceDetected: (Face? face) {
-                if (face != null) {
-                  debugPrint('statement  : ${face.headEulerAngleY}');
-                }
+                if (face == null) {}
                 //Do something
               },
               messageBuilder: (context, face) {
