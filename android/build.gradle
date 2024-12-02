@@ -1,28 +1,33 @@
+plugins {
+    id 'com.android.library' 
+    id 'org.jetbrains.kotlin.android' 
+}
+
 group 'com.conezi.face_camera'
 version '1.0-SNAPSHOT'
 
-buildscript {
-    ext.kotlin_version = '1.6.10'
-    repositories {
-        google()
-        mavenCentral()
-    }
+// buildscript {
+//     ext.kotlin_version = '1.6.10'
+//     repositories {
+//         google()
+//         mavenCentral()
+//     }
 
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
+//     dependencies {
+//         classpath 'com.android.tools.build:gradle:1.9.10'
+//         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//     }
+// }
 
-rootProject.allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
+// rootProject.allprojects {
+//     repositories {
+//         google()
+//         mavenCentral()
+//     }
+// }
 
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+// apply plugin: 'com.android.library'
+// apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 34
@@ -43,6 +48,11 @@ android {
     defaultConfig {
         minSdkVersion 21
     }
+}
+
+repositories {
+    google()
+    mavenCentral()
 }
 
 dependencies {
