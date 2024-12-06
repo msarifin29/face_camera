@@ -46,8 +46,7 @@ class SmartFaceCamera extends StatefulWidget {
       this.message,
       this.defaultFlashMode = CameraFlashMode.auto,
       this.orientation = CameraOrientation.portraitUp,
-      this.messageStyle = const TextStyle(
-          fontSize: 14, height: 1.5, fontWeight: FontWeight.w400),
+      this.messageStyle = const TextStyle(fontSize: 14, height: 1.5, fontWeight: FontWeight.w400),
       required this.onCapture,
       this.onFaceDetected,
       @Deprecated('Use [captureControlBuilder]') this.captureControlIcon,
@@ -59,12 +58,9 @@ class SmartFaceCamera extends StatefulWidget {
       this.indicatorAssetImage,
       this.indicatorBuilder,
       this.autoDisableCaptureControl = false,
-      Key? key})
-      : assert(
-            indicatorShape != IndicatorShape.image ||
-                indicatorAssetImage != null,
-            'IndicatorAssetImage must be provided when IndicatorShape is set to image.'),
-        super(key: key);
+      super.key})
+      : assert(indicatorShape != IndicatorShape.image || indicatorAssetImage != null,
+            'IndicatorAssetImage must be provided when IndicatorShape is set to image.');
 
   @override
   State<SmartFaceCamera> createState() => _SmartFaceCameraState();
@@ -98,8 +94,7 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
 
     if (widget.defaultCameraLens != null) {
       try {
-        _currentCameraLens =
-            _availableCameraLens.indexOf(widget.defaultCameraLens!);
+        _currentCameraLens = _availableCameraLens.indexOf(widget.defaultCameraLens!);
       } catch (e) {
         logError(e.toString());
       }
@@ -110,17 +105,14 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
     final cameras = FaceCamera.cameras
         .where((c) =>
             c.lensDirection ==
-            EnumHandler.cameraLensToCameraLensDirection(
-                _availableCameraLens[_currentCameraLens]))
+            EnumHandler.cameraLensToCameraLensDirection(_availableCameraLens[_currentCameraLens]))
         .toList();
 
     if (cameras.isNotEmpty) {
-      _controller = CameraController(cameras.first,
-          EnumHandler.imageResolutionToResolutionPreset(widget.imageResolution),
+      _controller = CameraController(
+          cameras.first, EnumHandler.imageResolutionToResolutionPreset(widget.imageResolution),
           enableAudio: widget.enableAudio,
-          imageFormatGroup: Platform.isAndroid
-              ? ImageFormatGroup.nv21
-              : ImageFormatGroup.bgra8888);
+          imageFormatGroup: Platform.isAndroid ? ImageFormatGroup.nv21 : ImageFormatGroup.bgra8888);
 
       await _controller!.initialize().then((_) {
         if (!mounted) {
@@ -129,13 +121,11 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
         setState(() {});
       });
 
-      await _changeFlashMode(
-          _availableFlashMode.indexOf(widget.defaultFlashMode));
+      await _changeFlashMode(_availableFlashMode.indexOf(widget.defaultFlashMode));
 
       await _controller!
           .lockCaptureOrientation(
-              EnumHandler.cameraOrientationToDeviceOrientation(
-                  widget.orientation))
+              EnumHandler.cameraOrientationToDeviceOrientation(widget.orientation))
           .then((_) {
         if (mounted) setState(() {});
       });
@@ -146,8 +136,7 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
 
   Future<void> _changeFlashMode(int index) async {
     await _controller!
-        .setFlashMode(
-            EnumHandler.cameraFlashModeToFlashMode(_availableFlashMode[index]))
+        .setFlashMode(EnumHandler.cameraFlashModeToFlashMode(_availableFlashMode[index]))
         .then((_) {
       if (mounted) setState(() => _currentFlashMode = index);
     });
@@ -200,8 +189,7 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
     return Stack(
       alignment: Alignment.center,
       children: [
-        if (cameraController != null &&
-            cameraController.value.isInitialized) ...[
+        if (cameraController != null && cameraController.value.isInitialized) ...[
           Transform.scale(
             scale: 1.0,
             child: AspectRatio(
@@ -220,8 +208,7 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
                         if (_detectedFace != null) ...[
                           SizedBox(
                               width: cameraController.value.previewSize!.width,
-                              height:
-                                  cameraController.value.previewSize!.height,
+                              height: cameraController.value.previewSize!.height,
                               child: widget.indicatorBuilder?.call(
                                       context,
                                       _detectedFace,
@@ -233,11 +220,9 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
                                     painter: FacePainter(
                                         face: _detectedFace!.face,
                                         indicatorShape: widget.indicatorShape,
-                                        indicatorAssetImage:
-                                            widget.indicatorAssetImage,
+                                        indicatorAssetImage: widget.indicatorAssetImage,
                                         imageSize: Size(
-                                          _controller!
-                                              .value.previewSize!.height,
+                                          _controller!.value.previewSize!.height,
                                           _controller!.value.previewSize!.width,
                                         )),
                                   ))
@@ -295,8 +280,7 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
         if (widget.message != null) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 55, vertical: 15),
-            child: Text(widget.message!,
-                textAlign: TextAlign.center, style: widget.messageStyle),
+            child: Text(widget.message!, textAlign: TextAlign.center, style: widget.messageStyle),
           );
         }
         return const SizedBox.shrink();
@@ -312,12 +296,10 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
   }
 
   /// Determines when to disable the capture control button.
-  bool get _disableCapture =>
-      widget.autoDisableCaptureControl && _detectedFace?.face == null;
+  bool get _disableCapture => widget.autoDisableCaptureControl && _detectedFace?.face == null;
 
   /// Determines the camera controls color.
-  Color? get iconColor =>
-      _enableControls ? null : Theme.of(context).disabledColor;
+  Color? get iconColor => _enableControls ? null : Theme.of(context).disabledColor;
 
   /// Display the control buttons to take pictures.
   Widget _captureControlWidget() {
@@ -326,31 +308,26 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
           widget.captureControlIcon ??
           CircleAvatar(
               radius: 35,
-              foregroundColor: _enableControls && !_disableCapture
-                  ? null
-                  : Theme.of(context).disabledColor,
+              foregroundColor:
+                  _enableControls && !_disableCapture ? null : Theme.of(context).disabledColor,
               child: const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Icon(Icons.camera_alt, size: 35),
               )),
-      onPressed: _enableControls && !_disableCapture
-          ? _onTakePictureButtonPressed
-          : null,
+      onPressed: _enableControls && !_disableCapture ? _onTakePictureButtonPressed : null,
     );
   }
 
   /// Display the control buttons to switch between flash modes.
   Widget _flashControlWidget() {
-    final icon =
-        _availableFlashMode[_currentFlashMode] == CameraFlashMode.always
-            ? Icons.flash_on
-            : _availableFlashMode[_currentFlashMode] == CameraFlashMode.off
-                ? Icons.flash_off
-                : Icons.flash_auto;
+    final icon = _availableFlashMode[_currentFlashMode] == CameraFlashMode.always
+        ? Icons.flash_on
+        : _availableFlashMode[_currentFlashMode] == CameraFlashMode.off
+            ? Icons.flash_off
+            : Icons.flash_auto;
 
     return IconButton(
-      icon: widget.flashControlBuilder
-              ?.call(context, _availableFlashMode[_currentFlashMode]) ??
+      icon: widget.flashControlBuilder?.call(context, _availableFlashMode[_currentFlashMode]) ??
           CircleAvatar(
               radius: 25,
               foregroundColor: iconColor,
@@ -359,8 +336,7 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
                 child: Icon(icon, size: 25),
               )),
       onPressed: _enableControls
-          ? () => _changeFlashMode(
-              (_currentFlashMode + 1) % _availableFlashMode.length)
+          ? () => _changeFlashMode((_currentFlashMode + 1) % _availableFlashMode.length)
           : null,
     );
   }
@@ -378,8 +354,7 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
                 )),
         onPressed: _enableControls
             ? () {
-                _currentCameraLens =
-                    (_currentCameraLens + 1) % _availableCameraLens.length;
+                _currentCameraLens = (_currentCameraLens + 1) % _availableCameraLens.length;
                 _initCamera();
               }
             : null);
@@ -388,8 +363,7 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
   String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
 
   void showInSnackBar(String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
   void onViewFinderTap(TapDownDetails details, BoxConstraints constraints) {
@@ -473,8 +447,7 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
     if (!_alreadyCheckingImage && mounted) {
       _alreadyCheckingImage = true;
       try {
-        await FaceIdentifier.scanImage(
-                cameraImage: cameraImage, controller: cameraController)
+        await FaceIdentifier.scanImage(cameraImage: cameraImage, controller: cameraController)
             .then((result) async {
           setState(() => _detectedFace = result);
 
