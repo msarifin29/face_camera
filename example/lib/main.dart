@@ -36,10 +36,10 @@ class BTN extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
         onPressed: () async {
-          await FaceCamera.initialize().then((value) =>
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const CameraPage();
-              })));
+          await FaceCamera.initialize()
+              .then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const CameraPage();
+                  })));
         },
         icon: const Icon(Icons.camera_alt_outlined),
         label: const Text('Open Camera'));
@@ -54,63 +54,52 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
-  File? _capturedImage;
+  final _capturedImage = ValueNotifier<File?>(null);
+  late FaceCameraController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = FaceCameraController(onCapture: (image) {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('FaceCamera example app'),
-        ),
-        body: Builder(builder: (context) {
-          if (_capturedImage != null) {
+      body: ValueListenableBuilder(
+        valueListenable: _capturedImage,
+        builder: (context, v, _) {
+          if (_capturedImage.value != null) {
             return Center(
               child: Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
                   Image.file(
-                    _capturedImage!,
+                    _capturedImage.value!,
                     width: double.maxFinite,
                     fit: BoxFit.fitWidth,
                   ),
                   ElevatedButton(
-                      onPressed: () => setState(() => _capturedImage = null),
-                      child: const Text(
-                        'Capture Again',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w700),
-                      ))
+                    onPressed: () => _capturedImage.value = null,
+                    child: const Text(
+                      'Capture Again',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                    ),
+                  )
                 ],
               ),
             );
           }
           return SmartFaceCamera(
-              // autoCapture: true,
-              defaultCameraLens: CameraLens.front,
-              onCapture: (File? image) {
-                setState(() => _capturedImage = image);
-              },
-              onFaceDetected: (Face? face) {
-                if (face == null) {}
-                //Do something
-              },
-              messageBuilder: (context, face) {
-                if (face == null) {
-                  return _message('Place your face in the camera');
-                } else if (!face.wellPositioned) {
-                  return _message('Center your face in the square');
-                }
-                return const SizedBox.shrink();
-              });
-        }));
+            controller: controller,
+            showCaptureControl: true,
+            captureControl: (image) {
+              _capturedImage.value = image;
+            },
+          );
+        },
+      ),
+    );
   }
-
-  Widget _message(String msg) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 55, vertical: 15),
-        child: Text(msg,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-                fontSize: 14, height: 1.5, fontWeight: FontWeight.w400)),
-      );
 }

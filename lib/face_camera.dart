@@ -15,6 +15,7 @@ export 'package:face_camera/src/handlers/face_identifier.dart';
 export 'package:face_camera/src/handlers/enum_handler.dart';
 export 'package:face_camera/src/res/app_images.dart';
 export 'package:face_camera/src/res/builders.dart';
+export 'package:face_camera/src/controller/face_camera_controller.dart';
 
 class FaceCamera {
   //static const MethodChannel _channel = MethodChannel('face_camera');

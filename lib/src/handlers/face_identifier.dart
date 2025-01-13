@@ -43,13 +43,8 @@ class FaceIdentifier {
     } else if (Platform.isAndroid) {
       var rotationCompensation = orientations[controller.value.deviceOrientation];
       if (rotationCompensation == null) return null;
-      if (camera.lensDirection == CameraLensDirection.front) {
-        // front-facing
-        rotationCompensation = (sensorOrientation + rotationCompensation) % 360;
-      } else {
-        // back-facing
-        rotationCompensation = (sensorOrientation - rotationCompensation + 360) % 360;
-      }
+      // front-facing
+      rotationCompensation = (sensorOrientation + rotationCompensation) % 360;
       rotation = InputImageRotationValue.fromRawValue(rotationCompensation);
     }
     if (rotation == null) return null;
@@ -86,10 +81,10 @@ class FaceIdentifier {
   static Future<DetectedFace?> _detectFace({required visionImage}) async {
     if (visionImage == null) return null;
     final options = FaceDetectorOptions(
-        enableLandmarks: true,
-        enableTracking: true,
-        // enableContours: true,
-        performanceMode: FaceDetectorMode.accurate);
+      enableLandmarks: true,
+      enableTracking: true,
+      performanceMode: FaceDetectorMode.accurate,
+    );
     final faceDetector = FaceDetector(options: options);
     try {
       final List<Face> faces = await faceDetector.processImage(visionImage);
